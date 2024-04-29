@@ -11,23 +11,28 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/gen-ex",
+            "aot": true,
+            "assets": [],
+            "buildOptimizer": true,
+            "extractLicenses": true,
             "index": "src/index.html",
-            "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "main": "src/main.ts",
+            "namedChunks": false,
+            "optimization": false,
+            "outputHashing": "all",
+            "outputPath": "dist/public",
+            "polyfills": "src/polyfills.ts",
+            "scripts": [],
+            "sourceMap": true,
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "node_modules"
+              ]
+            },
             "tsConfig": "tsconfig.app.json",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.css"
-            ],
-            "scripts": []
+            "vendorChunk": false
           },
           "configurations": {
             "production": {
@@ -48,10 +53,11 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "outputPath": "dist/development/external"
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "development"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
