@@ -1,9 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Type } from '@nestjs/common';
 import { OpenAI } from 'openai';
-import ChatCompletionCreateParamsBase from 'openai';
-import ChatCompletionTool from 'openai';
-import * as hacakthon_keys from "c:/shared/content/config/api-keys/hackathon_openai_keys.json"
-import { user401kData } from './user401kData';
+import { users } from '../data/userData';
+import * as hacakthon_keys from "c:/shared/content/config/api-keys/hackathon_openai_keys.json";
+
 
 const OPEN_AI_KEY = hacakthon_keys["team_9"]
 
@@ -11,61 +10,77 @@ const openai = new OpenAI({
     apiKey: OPEN_AI_KEY
 });
 
-class HandlerService {
+interface user401kData {
+    id: number,
+    name: string,
+    contribution_percentage: number,
+    employer_match: number
+}
+
+@Injectable()
+export class HandlerService {
     constructor() {
     }
 
-    getUser401kPercentage(uid: number) {
-        
+    current_userID = 0;
+    messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = []
+    componentToRender: {component: Type<any>, inputs: Record<any, any>}[]= [];
+
+    toolsToCall: OpenAI.Chat.Completions.ChatCompletionTool[] = [
+        {
+            function: {
+                name: "display_401k_components",
+                description: "Displays an interactive web component with a users 401(k) contribution percentage and 401(k) employer match",
+                parameters: {
+                    type: "object",
+                    properties: {
+                        name: {
+                            type: "string",
+                            description: "The users name"
+                        },
+                        contribution_percentage: {
+                            type: "number",
+                            description: "The users 401(k) contribution percentage"
+                        },
+                        employer_match: {
+                            type: "number",
+                            description: "The users 401(k) employer match"
+                        }
+                    },
+                    required: ["name", "contribution_percentage", "employer_match"],
+                },
+            },
+            type: "function"
+        },
+    ];
+
+    postUserRequest(message:string, userId:number) {
+        this.messages.push({ role: "user", content: message});
+        this.current_userID = userId;
+        this.formatOpenAIPromt(this.messages);
     }
 
-    display401kComponent(data: user401kData) {
-
+    getUser401kDetails(uid: number) {
+        let thisUser: user401kData = users[uid] as user401kData;
+        return [thisUser.name, thisUser.contribution_percentage, thisUser.employer_match];
     }
 
-    getCurrentWeather(location: string, unit = "fahrenheit") {
-        if (location.toLowerCase().includes("tokyo")) {
-            return JSON.stringify({ location: "Tokyo", temperature: "10", unit: "celsius" });
-        } else if (location.toLowerCase().includes("san francisco")) {
-            return JSON.stringify({ location: "San Francisco", temperature: "72", unit: "fahrenheit" });
-        } else if (location.toLowerCase().includes("paris")) {
-            return JSON.stringify({ location: "Paris", temperature: "22", unit: "fahrenheit" });
-        } else {
-            return JSON.stringify({ location, temperature: "unknown" });
-        }
+    display401kComponent() {
+        const details = this.getUser401kDetails(this.current_userID)
+        console.log(`${details[0]} contributes ${details[1]}% of their salary to their 401k, their employer will match up to ${details[2]}%`);
+        this.componentToRender.push({component: Participant401kComponent, inputs: {contributionAmount: details[1], employerAmount: details[2]}});
+    }
+
+    getComponentsToRender() {
+        return this.componentToRender;
     }
 
     // ACTUALLY CALLING OPEN AI
-    async formatOpenAIPromt(userMessage: string) {
-        const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
-            { role: "user", content: "What's the weather like in San Francisco, Tokyo, and Paris?" },
-        ];
-        const toolsToCall: OpenAI.Chat.Completions.ChatCompletionTool[] = [
-            {
-                function: {
-                    name: "get_current_weather",
-                    description: "Get the current weather in a given location",
-                    parameters: {
-                        type: "object",
-                        properties: {
-                            location: {
-                                type: "string",
-                                description: "The city and state, e.g. San Francisco, CA",
-                            },
-                            unit: { type: "string", enum: ["celsius", "fahrenheit"] },
-                        },
-                        required: ["location"],
-                    },
-                },
-                type: "function"
-            },
-        ];
-
-
+    async formatOpenAIPromt(userMessage: OpenAI.Chat.Completions.ChatCompletionMessageParam[]) {
         const response = await openai.chat.completions.create({
             model: "gpt-3.5-turbo-0125",
-            messages: messages,
-            tools: toolsToCall,
+            messages: userMessage,
+            tools: this.toolsToCall,
             tool_choice: "auto", // auto is default, but we'll be explicit
         });
         const responseMessage = response.choices[0].message;
@@ -76,9 +91,9 @@ class HandlerService {
             // Step 3: call the function
             // Note: the JSON response may not always be valid; be sure to handle errors
             const availableFunctions: any = {
-                'get_current_weather' : this.getCurrentWeather,
+                'display_401k_details' : this.display401kComponent,
             }; // only one function in this example, but you can have multiple
-            messages.push(responseMessage); // extend conversation with assistant's reply
+            this.messages.push(responseMessage); // extend conversation with assistant's reply
             for (const toolCall of toolCalls) {
                 const functionName: string = toolCall.function.name;
                 const functionToCall = availableFunctions[functionName];
@@ -87,7 +102,7 @@ class HandlerService {
                     functionArgs.location,
                     functionArgs.unit
                 );
-                messages.push({
+                this.messages.push({
                     tool_call_id: toolCall.id,
                     role: "tool",
                     content: functionResponse,
@@ -95,7 +110,7 @@ class HandlerService {
             }
             const secondResponse = await openai.chat.completions.create({
                 model: "gpt-3.5-turbo-0125",
-                messages: messages,
+                messages: this.messages,
             }); // get a new response from the model where it can see the function response
             console.log(secondResponse.choices[0].message.content);
             return secondResponse.choices;
@@ -104,6 +119,3 @@ class HandlerService {
         }
     }
 }
-
-let handlerService = new HandlerService();
-console.log(handlerService.formatOpenAIPromt(""))
