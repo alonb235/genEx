@@ -1,4 +1,4 @@
-import { ServerHandlerService } from "./server/serverhandler.service";
+import { HandlerService } from "./server/handler.service";
 import { All, Get, Post, Header, Controller } from '@nestjs/common'
 import { Request, Response } from "express";
 import { readFileSync } from 'fs';
@@ -6,7 +6,7 @@ import { join } from 'path';
  
 @Controller()
 export class ServerController {
-    constructor(private readonly handlerService: ServerHandlerService) {}
+    constructor(private readonly handlerService: HandlerService) {}
 
     @Get('healthcheck')
     healthcheck() {
@@ -15,7 +15,7 @@ export class ServerController {
 
     @Get('apicall')
     async makeApiCall(req: Request, res: Response) {
-        return this.handlerService.handler(req);
+        return this.handlerService.formatOpenAIPromt([])
     }
 
     @All('*')
