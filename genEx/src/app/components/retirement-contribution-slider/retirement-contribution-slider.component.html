@@ -1,0 +1,17 @@
+<div class="container">
+    <div class=".contribution-slider">
+        <h2>401k contribution slider</h2>
+
+        <p>income: ${{income}}</p>
+    
+        <mat-slider min="0" max="{{maxContributionPercentage}}" step="1" discrete="true">
+            <input matSliderThumb [(ngModel)]="value" (valueChange)="valueChange()">
+        </mat-slider>
+        <div [style.margin-left]="(companyMatch / maxContributionPercentage * 100)+ '%'">
+            <i class=" arrow up"></i>
+            <p>company match: {{companyMatch}}%</p>
+        </div>
+    
+        <p>total contribution: ${{totalContribution}}</p>
+    </div>
+</div>
