@@ -73,6 +73,7 @@ export class HandlerService {
         const details = this.getUser401kDetails(this.current_userID)
         console.log(`${details[0]} contributes ${details[1]}% of their salary to their 401k, their employer will match up to ${details[2]}%`);
         this.componentToRender.push({component: RetirementContributionSliderComponent, inputs: { totalContribution: details[1], companyMatch: details[2], income: 100000}});
+        console.log({component: RetirementContributionSliderComponent, inputs: { totalContribution: details[1], companyMatch: details[2], income: 100000}})
     }
 
     getComponentsToRender() {

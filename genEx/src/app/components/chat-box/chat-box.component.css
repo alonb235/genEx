@@ -17,13 +17,13 @@
 .left {
     align-self: flex-start;
     background-color: lightblue;
-    border-radius: 20% 20% 20% 0;
+    border-radius: 20px 20px 20px 0;
 }
 
 .right {
     align-self: flex-end;
     background-color: rgba(211, 211, 211, 0.247);
-    border-radius: 20% 20% 0 20%;
+    border-radius: 20px 20px 0 20px;
 
 }
 

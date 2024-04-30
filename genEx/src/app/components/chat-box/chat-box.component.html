@@ -1,11 +1,16 @@
 <div class="container">
     <ng-container *ngFor="let msg of messages">
-        <div *ngIf="msg.user" class="bubble right">
-            {{msg.msg}}
-        </div>
-        <div *ngIf="!msg.user" class="bubble left">
-            {{msg.msg}}
-        </div>
+        <ng-container *ngIf="msg.component" class="bubble left">
+            <chat-bubble [msg]="msg.msg"></chat-bubble>
+        </ng-container>
+        <ng-container *ngIf="!msg.component">
+            <div *ngIf="msg.user" class="bubble right">
+                {{msg.msg}}
+            </div>
+            <div *ngIf="!msg.user" class="bubble left">
+                {{msg.msg}}
+            </div>
+        </ng-container>
     </ng-container>
     <form class="form">
         <mat-form-field class="message-input">
