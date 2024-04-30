@@ -14,14 +14,11 @@ import { HandlerService } from 'services/handler.service';
           currentCompon.component;
           inputs: currentCompon.inputs;
         " />
-        <button (click)="sendMessage()">Next</button>
       </div>
     `
   })
   export class ChatBubbleComponent {
-    constructor(private readonly handlerService: HandlerService) {
-
-    }
+    constructor(private readonly handlerService: HandlerService) {}
 
     public currentCompon: { component: Type<any>; inputs: Record<any, any>; }
 
@@ -29,9 +26,10 @@ import { HandlerService } from 'services/handler.service';
       return this.handlerService.getComponentsToRender().pop();
     }
 
-    sendMessage() {
-      this.handlerService.postUserRequest("A user is asking what their 401(k) contribution percentage is and what their employer will match. As a response please display an interactive web component for the user", 0);
-      this.currentCompon = this.currentComponent()
+   async  sendMessage(msg) {
+      await this.handlerService.postUserRequest(msg, 0);
+      // this.currentCompon = this.currentComponent()
+      return this.currentComponent();
     }
     
   }

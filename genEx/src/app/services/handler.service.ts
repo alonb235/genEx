@@ -38,30 +38,30 @@ export class HandlerService {
                 parameters: {
                     type: "object",
                     properties: {
-                        name: {
-                            type: "string",
-                            description: "The users name"
-                        },
-                        contribution_percentage: {
-                            type: "number",
-                            description: "The users 401(k) contribution percentage"
-                        },
-                        employer_match: {
-                            type: "number",
-                            description: "The users 401(k) employer match"
-                        }
+                        // name: {
+                        //     type: "string",
+                        //     description: "The users name"
+                        // },
+                        // contribution_percentage: {
+                        //     type: "number",
+                        //     description: "The users 401(k) contribution percentage"
+                        // },
+                        // employer_match: {
+                        //     type: "number",
+                        //     description: "The users 401(k) employer match"
+                        // }
                     },
-                    required: ["name", "contribution_percentage", "employer_match"],
+                    required: [],
                 },
             },
             type: "function"
         },
     ];
 
-    postUserRequest(message:string, userId:number) {
+    async postUserRequest(message:string, userId:number) {
         this.messages.push({ role: "user", content: message});
         this.current_userID = userId;
-        this.formatOpenAIPromt(this.messages);
+        return await this.formatOpenAIPromt(this.messages);
     }
 
     getUser401kDetails(uid: number) {

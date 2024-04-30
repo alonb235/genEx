@@ -1,0 +1,17 @@
+<div class="container">
+    <ng-container *ngFor="let msg of messages">
+        <div *ngIf="msg.user" class="bubble right">
+            {{msg.msg}}
+        </div>
+        <div *ngIf="!msg.user" class="bubble left">
+            {{msg.msg}}
+        </div>
+    </ng-container>
+    <form class="form">
+        <mat-form-field class="message-input">
+            <mat-label>type your message here</mat-label>
+            <textarea matInput placeholder="Ex. It makes me feel..." #messageInput></textarea>
+        </mat-form-field>
+        <button mat-stroked-button class="send-button" (click)='onClick(messageInput.value)'>Send</button>
+    </form>
+</div>

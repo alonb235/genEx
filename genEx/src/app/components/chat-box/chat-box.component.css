@@ -1,0 +1,43 @@
+.container {
+    border: solid 1px black;
+    margin: 20px;
+    width: 500px;
+    height: 800px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border-radius: 10px;
+}
+
+.bubble {
+    margin: 5%;
+    padding: 10px 20px 10px 20px;
+}
+
+.left {
+    align-self: flex-start;
+    background-color: lightblue;
+    border-radius: 20% 20% 20% 0;
+}
+
+.right {
+    align-self: flex-end;
+    background-color: rgba(211, 211, 211, 0.247);
+    border-radius: 20% 20% 0 20%;
+
+}
+
+.form {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    display: flex;
+}
+.message-input {
+    width: 77%;
+    padding-left: 5%;
+}
+.send-button {
+    width: 5%;
+    margin: 10px;
+}
