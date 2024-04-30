@@ -74,14 +74,18 @@ export class HandlerService {
 
     display401kComponent() {
         const details = this.getUserDetails(this.current_userID)
-        console.log(`${details.name} contributes ${details.contribution_percentage}% of their salary to their 401k, their employer will match up to ${details.employer_match}%`);
+        const resStr = `${details.name} contributes ${details.totalContribution}% of their salary to their 401k, their employer will match up to ${details.companyMatch}%`;
+        console.log(resStr);
         this.componentToRender.push({component: RetirementContributionSliderComponent, inputs: { totalContribution: details.totalContribution, companyMatch: details.companyMatch, income: details.income}});
+        return resStr;
     }
 
     displayIraComponents() {
-        const details = this.getUserDetails(this.current_userID)
-        console.log(`${details[0]} contributes ${details[1]}% of their salary to their 401k, their employer will match up to ${details[2]}%`);
-        this.componentToRender.push({component: YourIraComponent, inputs: {details[]}})
+        const details = this.getUserDetails(this.current_userID);
+        const resStr = `${details.name} has an IRA Balance of ${details.iraBalance} in the account ${details.iraAccount}. So far this year ${details.name} has contributed ${details.iraContributionsThisYear} dollars to their IRA.`
+        console.log(resStr);
+        this.componentToRender.push({component: YourIraComponent, inputs: {name: details.name, iraAccount: details.iraAccount, iraBalance: details.iraBalance, iraContributionsThisYear: details.iraContributionsThisYear}});
+        return resStr;
     }
 
     getComponentsToRender() {
