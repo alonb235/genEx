@@ -1,6 +1,7 @@
 import { Type, Injectable } from '@angular/core';
 import { OpenAI } from 'openai';
 import { users } from './userData';
+import { Subject } from 'rxjs';
 import * as hackathon_keys from "c:/shared/content/config/api-keys/hackathon_openai_keys.json";
 import { RetirementContributionSliderComponent } from '../components/retirement-contribution-slider/retirement-contribution-slider.component';
 import { YourIraComponent } from 'components/your-ira/your-ira.component';
@@ -31,6 +32,7 @@ export class HandlerService {
     constructor() {
     }
 
+    componentToRenderUpdated = new Subject<void>();
     current_userID = 0;
     messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = []
     componentToRender: {component: Type<any>, inputs: Record<any, any>}[]= [];
@@ -75,16 +77,16 @@ export class HandlerService {
     display401kComponent() {
         const details = this.getUserDetails(this.current_userID)
         const resStr = `${details.name} contributes ${details.totalContribution}% of their salary to their 401k, their employer will match up to ${details.companyMatch}%`;
-        console.log(resStr);
         this.componentToRender.push({component: RetirementContributionSliderComponent, inputs: { totalContribution: details.totalContribution, companyMatch: details.companyMatch, income: details.income}});
+        this.componentToRenderUpdated.next();
         return resStr;
     }
 
     displayIraComponents() {
         const details = this.getUserDetails(this.current_userID);
         const resStr = `${details.name} has an IRA Balance of ${details.iraBalance} in the account ${details.iraAccount}. So far this year ${details.name} has contributed ${details.iraContributionsThisYear} dollars to their IRA.`
-        console.log(resStr);
         this.componentToRender.push({component: YourIraComponent, inputs: {name: details.name, iraAccount: details.iraAccount, iraBalance: details.iraBalance, iraContributionsThisYear: details.iraContributionsThisYear}});
+        this.componentToRenderUpdated.next();
         return resStr;
     }
 
@@ -108,17 +110,15 @@ export class HandlerService {
             // Step 3: call the function
             // Note: the JSON response may not always be valid; be sure to handle errors
             const availableFunctions: any = {
-                'display_401k_components' : this.display401kComponent(),
-                'display_IRA_components' : this.displayIraComponents(),
+                'display_401k_components' : this.display401kComponent.bind(this),
+                'display_IRA_components' : this.displayIraComponents.bind(this),
             }; // only one function in this example, but you can have multiple
             this.messages.push(responseMessage); // extend conversation with assistant's reply
             for (const toolCall of toolCalls) {
                 const functionName: string = toolCall.function.name;
-                console.log(`Function name ${functionName}`)
                 const functionToCall = availableFunctions[functionName];
-                console.log(`Function to call ${functionToCall}`)
                 const functionArgs = JSON.parse(toolCall.function.arguments);
-                const functionResponse = functionToCall();
+                const functionResponse = functionToCall(functionArgs);
                 this.messages.push({
                     tool_call_id: toolCall.id,
                     role: "tool",
@@ -129,7 +129,6 @@ export class HandlerService {
                 model: "gpt-3.5-turbo-0125",
                 messages: this.messages,
             }); // get a new response from the model where it can see the function response
-            console.log(secondResponse.choices[0].message.content);
             return secondResponse.choices;
         } else {
             return "NOT WORKING";

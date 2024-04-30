@@ -1,8 +1,10 @@
-import { Component, inject, Type } from '@angular/core';
+import { Component, ComponentFactoryResolver, inject, Type, ViewChild, ViewContainerRef } from '@angular/core';
 import { NgComponentOutlet, AsyncPipe } from '@angular/common'
 import { MatSliderModule } from '@angular/material/slider'
 import { FormsModule } from '@angular/forms'
+import { Subscription } from 'rxjs';
 import { HandlerService } from 'services/handler.service';
+import { RetirementContributionSliderComponent } from '../retirement-contribution-slider/retirement-contribution-slider.component'
 
 @Component({
     selector: 'chat-bubble',
@@ -10,28 +12,41 @@ import { HandlerService } from 'services/handler.service';
     imports: [NgComponentOutlet, AsyncPipe],
     template: `
       <div>
-        <ng-container *ngComponentOutlet="
-          currentCompon.component;
-          inputs: currentCompon.inputs;
-        " />
+        <ng-container #container></ng-container>
         <button (click)="sendMessage()">Next</button>
       </div>
     `
   })
   export class ChatBubbleComponent {
-    constructor(private readonly handlerService: HandlerService) {
+    @ViewChild('container', { read: ViewContainerRef}) container: ViewContainerRef;
+    constructor(private readonly handlerService: HandlerService, private componentFactoryResolver: ComponentFactoryResolver) {
 
     }
 
     public currentCompon: { component: Type<any>; inputs: Record<any, any>; }
+    private subscription: Subscription;
+
+    ngOnDestroy() {
+      this.subscription.unsubscribe();
+    }
 
     currentComponent() {
-      return this.handlerService.getComponentsToRender().pop();
+      const comp = this.handlerService.getComponentsToRender().pop()
+      this.loadComponent(comp.component, comp.inputs)
     }
 
-    sendMessage() {
-      this.handlerService.postUserRequest("A user is asking what their 401(k) contribution percentage is and what their employer will match. As a response please display an interactive web component for the user", 0);
-      this.currentCompon = this.currentComponent()
+    async sendMessage() {
+      await this.handlerService.postUserRequest("A user is asking what their IRA contributions is. As a response please display an interactive web component for the user", 0);
+      this.subscription = this.handlerService.componentToRenderUpdated.subscribe(() => {
+        this.currentComponent()
+      })
     }
-    
+
+    loadComponent(component: Type<any>, inputs: Record<any,any>) {
+      const componetFactory = this.componentFactoryResolver.resolveComponentFactory(component);
+      const componentRef = this.container.createComponent(componetFactory);
+      for (const input in inputs) {
+        componentRef.instance[input] = inputs[input]
+      }
+    }
   }
