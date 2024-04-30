@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatSliderModule } from '@angular/material/slider'
 import { FormsModule } from '@angular/forms'
 
@@ -10,10 +10,10 @@ import { FormsModule } from '@angular/forms'
   styleUrl: './retirement-contribution-slider.component.css'
 })
 export class RetirementContributionSliderComponent {
-  income = 100000
-  companyMatch = 4
+  @Input() income: number = 100000
+  @Input() companyMatch: number = 4
   value = 0;
-  totalContribution = 0;
+  @Input() totalContribution: number = 0;
   contributionLimit = 23000
   maxContributionPercentage = this.contributionLimit / this.income * 100
 
