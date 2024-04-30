@@ -20,11 +20,10 @@ import { RetirementContributionSliderComponent } from '../retirement-contributio
     @ViewChild('container', { read: ViewContainerRef}) container: ViewContainerRef;
     constructor(private readonly handlerService: HandlerService, private componentFactoryResolver: ComponentFactoryResolver) {}
 
-    @Input()
-    msg = "A user is asking what their IRA contributions is. As a response please display an interactive web component for the user";
+    @Input() msg: string = "A user is asking what their IRA contributions is. As a response please display an interactive web component for the user";
 
     ngOnInit(): void {
-        this.sendMessage(this.msg)
+      this.sendMessage(this.msg)
     }
 
     public currentCompon: { component: Type<any>; inputs: Record<any, any>; }
@@ -41,9 +40,7 @@ import { RetirementContributionSliderComponent } from '../retirement-contributio
 
     async sendMessage(msg) {
       await this.handlerService.postUserRequest(msg, 0);
-      this.subscription = this.handlerService.componentToRenderUpdated.subscribe(() => {
-        this.currentComponent()
-      })
+      this.currentComponent()
     }
 
     loadComponent(component: Type<any>, inputs: Record<any,any>) {

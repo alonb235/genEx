@@ -21,7 +21,6 @@ export class ChatBoxComponent {
   ];
   msg = "A user is asking what their 401(k) contribution percentage is and what their employer will match. As a response please display an interactive web component for the user"
   onClick(msg) {
-    msg = this.msg
     this.messages.push({user: true, msg: msg, component: false})
     this.messages.push({user: false, msg: msg, component: true})
   }

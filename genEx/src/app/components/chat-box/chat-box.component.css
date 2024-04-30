@@ -2,16 +2,30 @@
     border: solid 1px black;
     margin: 20px;
     width: 500px;
-    height: 800px;
+    height: 700px;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
     position: relative;
-    border-radius: 10px;
+}
+
+.chats {
+    display: flex;
+    flex-direction: column-reverse;
+    position: relative;
+    height: 80%;
+    width: 100%;
+    overflow-y: auto;
+}
+
+.chats::-webkit-scrollbar {
+    display: none
 }
 
 .bubble {
     margin: 5%;
     padding: 10px 20px 10px 20px;
+    max-width: 100%;
 }
 
 .left {
@@ -30,14 +44,24 @@
 .form {
     width: 100%;
     position: absolute;
+    height: 20%;
     bottom: 0;
+    z-index: 100;
     display: flex;
+    border-radius: 10px;
+    background-color: rgb(230, 227, 227);
 }
+
 .message-input {
     width: 77%;
     padding-left: 5%;
 }
+
 .send-button {
     width: 5%;
     margin: 10px;
+}
+
+.formContainer {
+
 }
