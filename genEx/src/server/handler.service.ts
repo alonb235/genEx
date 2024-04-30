@@ -3,7 +3,7 @@ import { OpenAI } from 'openai';
 import { users } from '../data/userData';
 import * as hacakthon_keys from "c:/shared/content/config/api-keys/hackathon_openai_keys.json";
 import { RetirementContributionSliderComponent } from '../app/components/retirement-contribution-slider/retirement-contribution-slider.component';
-
+import { YourIraComponent } from 'components/your-ira/your-ira.component';
 
 const OPEN_AI_KEY = hacakthon_keys["team_9"]
 
@@ -15,7 +15,8 @@ interface user401kData {
     id: number,
     name: string,
     contribution_percentage: number,
-    employer_match: number
+    employer_match: number,
+    income: number
 }
 
 @Injectable()
@@ -63,13 +64,13 @@ export class HandlerService {
 
     getUser401kDetails(uid: number) {
         let thisUser: user401kData = users[uid] as user401kData;
-        return [thisUser.name, thisUser.contribution_percentage, thisUser.employer_match];
+        return [thisUser.name, thisUser.contribution_percentage, thisUser.employer_match, thisUser.income];
     }
 
     display401kComponent() {
         const details = this.getUser401kDetails(this.current_userID)
         console.log(`${details[0]} contributes ${details[1]}% of their salary to their 401k, their employer will match up to ${details[2]}%`);
-        this.componentToRender.push({component: RetirementContributionSliderComponent, inputs: {contributionAmount: details[1], employerAmount: details[2]}});
+        this.componentToRender.push({component: RetirementContributionSliderComponent, inputs: {totalContribution: details[1], companyMatch: details[2], income: details[3]}});
     }
 
     getComponentsToRender() {
