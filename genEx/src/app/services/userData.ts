@@ -2,7 +2,11 @@ export const users = [
     {
         "id": 0,
         "name": "JEFF",
-        "contribution_percentage": 4,
-        "employer_match": 7
+        "income": 100000,
+        "totalContribution": 4,
+        "companyMatch": 7,
+        "iraAccount": 123456789,
+        "iraBalance": 15000,
+        "iraContributionsThisYear": 1000
     }
 ]

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {MatFormFieldModule, MatLabel} from "@angular/material/form-field";
 import {MatSelectModule} from '@angular/material/select'
 import {MatInputModule} from '@angular/material/input'
@@ -13,5 +13,8 @@ import {MatButtonModule} from '@angular/material/button'
   styleUrl: './your-ira.component.css'
 })
 export class YourIraComponent {
-
+  @Input() name: string;
+  @Input() iraAccount: number;
+  @Input() iraBalance: number;
+  @Input() iraContributionsThisYear: number;
 }

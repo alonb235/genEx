@@ -1,7 +1,6 @@
 <div>
-
-
-    <h3>Ki Woo Kim - Roth IRA</h3>
+    <h3>{{ name }} - Roth IRA {{ iraAccount}}</h3>
+    <h5>Current Balance: ${{ iraBalance }}</h5>
     <mat-form-field appearance="fill" class="mat-form-field-w-margin">
         <mat-label>Funding Source</mat-label>
         <mat-select>
@@ -10,6 +9,7 @@
         </mat-select>
     </mat-form-field>
     <div>
+        <p>Contributions: ${{ iraContributionsThisYear }}</p>
         <p>Year</p>
         <p>2024</p>
 
