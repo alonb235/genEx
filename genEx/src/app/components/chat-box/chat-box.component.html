@@ -1,7 +1,7 @@
 <div class="container">
     <ng-container *ngFor="let msg of messages">
-        <ng-container *ngIf="msg.component" class="bubble left">
-            <chat-bubble [msg]="msg.msg"></chat-bubble>
+        <ng-container *ngIf="msg.component">
+            <chat-bubble class="bubble left" [msg]="msg.msg"></chat-bubble>
         </ng-container>
         <ng-container *ngIf="!msg.component">
             <div *ngIf="msg.user" class="bubble right">
