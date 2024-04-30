@@ -51,14 +51,14 @@ export class HandlerService {
         {
             function: {
                 name: "display_IRA_components",
-                descritption: "Displays an interactive web component for a User to view their IRA balance and contribute to it",
+                description: "Displays an interactive web component for a User to view their IRA balance and contribute to it",
                 parameters: {
                     type: "object",
                     properties: {},
                     required: []
                 }
             },
-            type: "funciton"
+            type: "function"
         }
     ];
 
