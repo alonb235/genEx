@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "lib": [
+            "ES2022",
+            "DOM"
+        ],
+        "module": "commonjs",
+        "target": "ES2022",
+        "moduleResolution": "node",
+        "baseUrl": "./",
+        "outDir": "dist",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "sourceMap": true,
+        "types": [
+            "node"
+        ],
+        "esModuleInterop": true,
+        "skipLibCheck": true
+    },
+    "files": [
+        "src/server.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

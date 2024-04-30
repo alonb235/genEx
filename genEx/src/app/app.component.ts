@@ -8,6 +8,10 @@ import { RetirementContributionSliderComponent } from './components/retirement-c
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
-  title = 'genEx';
+export class AppComponent implements OnInit {
+
+  title= "Hello"
+  ngOnInit() {
+
+  }
 }
