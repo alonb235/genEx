@@ -2,6 +2,7 @@ import { Component, inject, Type } from '@angular/core';
 import { NgComponentOutlet, AsyncPipe } from '@angular/common'
 import { MatSliderModule } from '@angular/material/slider'
 import { FormsModule } from '@angular/forms'
+import { Subscription } from 'rxjs';
 import { HandlerService } from 'services/handler.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { HandlerService } from 'services/handler.service';
     imports: [NgComponentOutlet, AsyncPipe],
     template: `
       <div>
-        <ng-container *ngComponentOutlet="
+        <ng-container [hidden]="!currentCompon" *ngComponentOutlet="
           currentCompon.component;
           inputs: currentCompon.inputs;
         " />
@@ -24,14 +25,25 @@ import { HandlerService } from 'services/handler.service';
     }
 
     public currentCompon: { component: Type<any>; inputs: Record<any, any>; }
+    private subscription: Subscription;
+
+    ngOnInit() {
+      this.currentCompon = this.currentComponent()
+      this.subscription = this.handlerService.componentToRenderUpdated.subscribe(() => {
+        this.currentCompon = this.currentComponent()
+      })
+    }
+
+    ngOnDestroy() {
+      this.subscription.unsubscribe();
+    }
 
     currentComponent() {
       return this.handlerService.getComponentsToRender().pop();
     }
 
-    sendMessage() {
-      this.handlerService.postUserRequest("A user is asking what their 401(k) contribution percentage is and what their employer will match. As a response please display an interactive web component for the user", 0);
-      this.currentCompon = this.currentComponent()
+    async sendMessage() {
+      await this.handlerService.postUserRequest("A user is asking what their 401(k) contribution percentage is and what their employer will match. As a response please display an interactive web component for the user", 0);
     }
     
   }

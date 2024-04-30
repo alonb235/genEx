@@ -1,6 +1,7 @@
 import { Type, Injectable } from '@angular/core';
 import { OpenAI } from 'openai';
 import { users } from './userData';
+import { Subject } from 'rxjs';
 import * as hackathon_keys from "c:/shared/content/config/api-keys/hackathon_openai_keys.json";
 import { RetirementContributionSliderComponent } from '../components/retirement-contribution-slider/retirement-contribution-slider.component';
 import { YourIraComponent } from 'components/your-ira/your-ira.component';
@@ -31,6 +32,7 @@ export class HandlerService {
     constructor() {
     }
 
+    componentToRenderUpdated = new Subject<void>();
     current_userID = 0;
     messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = []
     componentToRender: {component: Type<any>, inputs: Record<any, any>}[]= [];
@@ -77,6 +79,7 @@ export class HandlerService {
         const resStr = `${details.name} contributes ${details.totalContribution}% of their salary to their 401k, their employer will match up to ${details.companyMatch}%`;
         console.log(resStr);
         this.componentToRender.push({component: RetirementContributionSliderComponent, inputs: { totalContribution: details.totalContribution, companyMatch: details.companyMatch, income: details.income}});
+        this.componentToRenderUpdated.next();
         return resStr;
     }
 
@@ -85,6 +88,7 @@ export class HandlerService {
         const resStr = `${details.name} has an IRA Balance of ${details.iraBalance} in the account ${details.iraAccount}. So far this year ${details.name} has contributed ${details.iraContributionsThisYear} dollars to their IRA.`
         console.log(resStr);
         this.componentToRender.push({component: YourIraComponent, inputs: {name: details.name, iraAccount: details.iraAccount, iraBalance: details.iraBalance, iraContributionsThisYear: details.iraContributionsThisYear}});
+        this.componentToRenderUpdated.next();
         return resStr;
     }
 
