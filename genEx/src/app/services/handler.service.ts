@@ -3,6 +3,7 @@ import { OpenAI } from 'openai';
 import { users } from './userData';
 import * as hackathon_keys from "c:/shared/content/config/api-keys/hackathon_openai_keys.json";
 import { RetirementContributionSliderComponent } from '../components/retirement-contribution-slider/retirement-contribution-slider.component';
+import { YourIraComponent } from 'components/your-ira/your-ira.component';
 
 
 const OPEN_AI_KEY = hackathon_keys["team_9"]
@@ -12,11 +13,15 @@ const openai = new OpenAI({
     dangerouslyAllowBrowser: true
 });
 
-interface user401kData {
+interface userData {
     id: number,
     name: string,
-    contribution_percentage: number,
-    employer_match: number
+    income: number,
+    totalContribution: number,
+    companyMatch: number,
+    iraAccount: number,
+    iraBalance: number,
+    iraContributionsThisYear: number
 }
 
 @Injectable({
@@ -37,25 +42,24 @@ export class HandlerService {
                 description: "Displays an interactive web component with a users 401(k) contribution percentage and 401(k) employer match",
                 parameters: {
                     type: "object",
-                    properties: {
-                        name: {
-                            type: "string",
-                            description: "The users name"
-                        },
-                        contribution_percentage: {
-                            type: "number",
-                            description: "The users 401(k) contribution percentage"
-                        },
-                        employer_match: {
-                            type: "number",
-                            description: "The users 401(k) employer match"
-                        }
-                    },
-                    required: ["name", "contribution_percentage", "employer_match"],
+                    properties: {},
+                    required: []
                 },
             },
             type: "function"
         },
+        {
+            function: {
+                name: "display_IRA_components",
+                descritption: "Displays an interactive web component for a User to view their IRA balance and contribute to it",
+                parameters: {
+                    type: "object",
+                    properties: {},
+                    required: []
+                }
+            },
+            type: "funciton"
+        }
     ];
 
     postUserRequest(message:string, userId:number) {
@@ -64,15 +68,20 @@ export class HandlerService {
         this.formatOpenAIPromt(this.messages);
     }
 
-    getUser401kDetails(uid: number) {
-        let thisUser: user401kData = users[uid] as user401kData;
-        return [thisUser.name, thisUser.contribution_percentage, thisUser.employer_match];
+    getUserDetails(uid: number) {
+        return users[uid] as userData;
     }
 
     display401kComponent() {
-        const details = this.getUser401kDetails(this.current_userID)
+        const details = this.getUserDetails(this.current_userID)
+        console.log(`${details.name} contributes ${details.contribution_percentage}% of their salary to their 401k, their employer will match up to ${details.employer_match}%`);
+        this.componentToRender.push({component: RetirementContributionSliderComponent, inputs: { totalContribution: details.totalContribution, companyMatch: details.companyMatch, income: details.income}});
+    }
+
+    displayIraComponents() {
+        const details = this.getUserDetails(this.current_userID)
         console.log(`${details[0]} contributes ${details[1]}% of their salary to their 401k, their employer will match up to ${details[2]}%`);
-        this.componentToRender.push({component: RetirementContributionSliderComponent, inputs: { totalContribution: details[1], companyMatch: details[2], income: 100000}});
+        this.componentToRender.push({component: YourIraComponent, inputs: {details[]}})
     }
 
     getComponentsToRender() {
@@ -96,6 +105,7 @@ export class HandlerService {
             // Note: the JSON response may not always be valid; be sure to handle errors
             const availableFunctions: any = {
                 'display_401k_components' : this.display401kComponent(),
+                'display_IRA_components' : this.displayIraComponents(),
             }; // only one function in this example, but you can have multiple
             this.messages.push(responseMessage); // extend conversation with assistant's reply
             for (const toolCall of toolCalls) {
