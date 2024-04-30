@@ -27,6 +27,7 @@ export class ServerController {
                     __dirname,
                     'development',
                     'external',
+                    'browser',
                     'index.html'
                 ),
                 {

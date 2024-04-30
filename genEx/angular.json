@@ -11,28 +11,23 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "aot": true,
-            "assets": [],
-            "buildOptimizer": true,
-            "extractLicenses": true,
+            "outputPath": "dist/gen-ex",
             "index": "src/index.html",
-            "main": "src/main.ts",
-            "namedChunks": false,
-            "optimization": false,
-            "outputHashing": "all",
-            "outputPath": "dist/public",
-            "polyfills": "src/polyfills.ts",
-            "scripts": [],
-            "sourceMap": true,
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "node_modules"
-              ]
-            },
+            "browser": "src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "tsconfig.app.json",
-            "vendorChunk": false
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.css"
+            ],
+            "scripts": []
           },
           "configurations": {
             "production": {
