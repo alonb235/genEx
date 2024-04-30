@@ -6,14 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "build:development": "concurrently \"npm:build:client:development\" \"npm:build:server\"",
-    "build:server": "tsc --project tsconfig.server.json",
-    "build:client:development": "ng build --deploy-url=pkg/0.0.0/web/web",
-    "serve:development": "npm run build:development && npm run start:development",
-    "start:development": "cross-env ANGULAR_ENV=development npm run start:server",
-    "start:server": "node dist/server",
-    "clean": "rm -rf dist"
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
@@ -27,10 +20,6 @@
     "@angular/platform-browser": "^17.3.0",
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
-    "@nestjs/common": "^10.3.8",
-    "@nestjs/core": "^10.3.8",
-    "@nestjs/platform-express": "^10.3.8",
-    "compression": "^1.7.4",
     "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
     "node-fetch": "^3.3.2",
