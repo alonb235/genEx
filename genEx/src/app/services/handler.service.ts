@@ -72,7 +72,7 @@ export class HandlerService {
     display401kComponent() {
         const details = this.getUser401kDetails(this.current_userID)
         console.log(`${details[0]} contributes ${details[1]}% of their salary to their 401k, their employer will match up to ${details[2]}%`);
-        this.componentToRender.push({component: RetirementContributionSliderComponent, inputs: {contributionAmount: details[1], employerAmount: details[2]}});
+        this.componentToRender.push({component: RetirementContributionSliderComponent, inputs: { totalContribution: details[1], companyMatch: details[2], income: 100000}});
     }
 
     getComponentsToRender() {
@@ -95,17 +95,16 @@ export class HandlerService {
             // Step 3: call the function
             // Note: the JSON response may not always be valid; be sure to handle errors
             const availableFunctions: any = {
-                'display_401k_details' : this.display401kComponent,
+                'display_401k_components' : this.display401kComponent(),
             }; // only one function in this example, but you can have multiple
             this.messages.push(responseMessage); // extend conversation with assistant's reply
             for (const toolCall of toolCalls) {
                 const functionName: string = toolCall.function.name;
+                console.log(`Function name ${functionName}`)
                 const functionToCall = availableFunctions[functionName];
+                console.log(`Function to call ${functionToCall}`)
                 const functionArgs = JSON.parse(toolCall.function.arguments);
-                const functionResponse = functionToCall(
-                    functionArgs.location,
-                    functionArgs.unit
-                );
+                const functionResponse = functionToCall();
                 this.messages.push({
                     tool_call_id: toolCall.id,
                     role: "tool",
