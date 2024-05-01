@@ -6,6 +6,7 @@ import * as hackathon_keys from "c:/shared/content/config/api-keys/hackathon_ope
 import { RetirementContributionSliderComponent } from '../components/retirement-contribution-slider/retirement-contribution-slider.component';
 import { AccountBalanceComponent } from '../components/account-balance/account-balance.component'
 import { YourIraComponent } from 'components/your-ira/your-ira.component';
+import { FundsComponent } from 'components/funds/funds.component';
 
 
 const OPEN_AI_KEY = hackathon_keys["team_9"]
@@ -23,8 +24,9 @@ interface userData {
     companyMatch: number,
     iraAccount: number,
     iraBalance: number,
+    accountBalance: number,
     iraContributionsThisYear: number,
-    accountBalance: number
+    data:any[]
 }
 
 @Injectable({
@@ -74,7 +76,17 @@ export class HandlerService {
                 }
             },
             type: "function"
-        }
+        },
+       { function: {
+            name: "display_Funds",
+            description: "Displays an interactive web component for a User to view their invested funds",
+            parameters: {
+                type: "object",
+                properties: {},
+                required: []
+            }
+        },
+        type: "function"}
     ];
 
     async postUserRequest(message:string, userId:number) {
@@ -109,6 +121,13 @@ export class HandlerService {
         return resStr;
     }
 
+    displayFunds(){
+        const details = this.getUserDetails(this.current_userID);
+        const resStr = `${details.name} has an IRA Balance of ${details.iraBalance} in the account ${details.iraAccount}. So far this year ${details.name} has contributed ${details.iraContributionsThisYear} dollars to their IRA.`
+        this.componentToRender.push({component: FundsComponent, inputs: {fundData:details.data}});
+        return resStr;
+    }
+
     getComponentsToRender() {
         return this.componentToRender;
     }
@@ -131,7 +150,8 @@ export class HandlerService {
             const availableFunctions: any = {
                 'display_401k_components' : this.display401kComponent.bind(this),
                 'display_IRA_components' : this.displayIraComponents.bind(this),
-                'display_Balance_components' : this.displayBalanceComponent.bind(this)
+                'display_Balance_components' : this.displayBalanceComponent.bind(this),
+                'display_Funds':this.displayFunds.bind(this)
             }; // only one function in this example, but you can have multiple
             this.messages.push(responseMessage); // extend conversation with assistant's reply
             for (const toolCall of toolCalls) {
