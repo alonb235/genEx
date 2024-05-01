@@ -91,7 +91,7 @@ export class HandlerService {
     displayBalanceComponent() {
         const details = this.getUserDetails(this.current_userID)
         const resStr = `${details.name} has an account balance of ${details.accountBalance}`;
-        this.componentToRender.push({component: AccountBalanceComponent, inputs: { totalContribution: details.totalContribution, companyMatch: details.companyMatch, income: details.income}});
+        this.componentToRender.push({component: AccountBalanceComponent, inputs: { balance: details.accountBalance}});
         return resStr;
     }
 

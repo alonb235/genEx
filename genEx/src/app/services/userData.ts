@@ -8,6 +8,6 @@ export const users = [
         "iraAccount": 123456789,
         "iraBalance": 15000,
         "iraContributionsThisYear": 1000,
-        "accountBalance": -290183
+        "accountBalance": 1050183
     }
 ]

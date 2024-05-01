@@ -26,12 +26,18 @@ li a:hover {
     width: 80vw;
     display: flex;
     flex-wrap: wrap;
+    margin: 15px;
 }
 
 .card {
-    border: 1px solid black;
+    border: 1px solid lightgray;
+    background-color: rgba(0, 0, 0, 0.03);
     margin: 20px;
     padding: 20px;
-    width: 400px;
-    height: 500px;
+    min-width: 300px;
+    max-width: 300px;
+    min-height: 375px;
+    max-height: 375px;
+    border-radius: 10px;
+    overflow: auto;
 }

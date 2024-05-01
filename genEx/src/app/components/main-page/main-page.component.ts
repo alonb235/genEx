@@ -17,7 +17,7 @@ export class MainPageComponent {
   }
   
   async getComponents() {
-    await this.handlerService.postUserRequest('display all available components', 0)
+    await this.handlerService.postUserRequest('recently this user checked their account balance and contributes to their ira every month. display components based off of user history', 0)
     this.componentsToDisplay = this.handlerService.getComponentsToRender()
   }
 }
