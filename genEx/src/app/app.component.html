@@ -1,1 +1,6 @@
-<app-chat-box></app-chat-box>
+<div>
+    <div class="chat-bubble" (click)="openChat()">
+        <span class="plus-icon">+</span>
+    </div>
+    <app-chat-box *ngIf="chatVisible" class="centerChat"></app-chat-box>
+</div>

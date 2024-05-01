@@ -25,39 +25,86 @@
 .bubble {
     margin: 5%;
     padding: 10px 20px 10px 20px;
-    max-width: 100%;
+    max-width: 80%;
 }
 
 .left {
     align-self: flex-start;
     background-color: lightblue;
     border-radius: 20px 20px 20px 0;
+    word-wrap: break-word;
 }
 
 .right {
     align-self: flex-end;
     background-color: rgba(211, 211, 211, 0.247);
     border-radius: 20px 20px 0 20px;
-
+    word-wrap: break-word;
 }
 
 .form {
-    padding: 10px;
     width: 100%;
     position: absolute;
     height: 20%;
     bottom: 0;
-    z-index: 100;
     display: flex;
-    border-radius: 10px;
-    background-color: rgb(230, 227, 227);
-    word-wrap: over;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 0 10px 10px;
+    background-color: rgb(243, 241, 241);
 }
 
 .message-input {
-    width: 85%;
+    width: 100%;
+    padding-left: 10px;
+}
+
+.chat-input-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.arrow {
+    border: solid rgb(255, 255, 255);
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+}
+
+.up {
+    transform: rotate(-45deg);
+}
+
+.chat-input {
+    flex: 1;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    resize: none;
+    outline: none;
 }
 
 .send-button {
-    width: 15%;
+    border-radius: 50%;
+    padding: 10px;
+    margin-left: 10px;
+    cursor: pointer;
+    border: none;
+    color: white;
+    background-color: #007bff;
+}
+
+.send-button:hover {
+    background-color: #0056b3;
+}
+
+.messageInput {
+    background-color: white;
+    word-wrap: break-word;
+    resize: none;
+}
+
+.messageInput::-webkit-scrollbar {
+    display: none
 }

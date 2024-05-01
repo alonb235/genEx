@@ -5,17 +5,14 @@
                 {{msg.msg}}
             </div>
             <div *ngIf="!msg.user" class="bubble left">
-                <chat-bubble [msg]="msg.msg"></chat-bubble>
+                <chat-bubble [msg]="msg.msg" style="padding: 10px;"></chat-bubble>
             </div>
         </ng-container>
     </div>
-    <div class="formContainer">
-        <form class="form">
-            <mat-form-field class="message-input">
-                <mat-label>type your message here</mat-label>
-                <textarea matInput placeholder="Ex. It makes me feel..." #messageInput></textarea>
-            </mat-form-field>
-            <button mat-stroked-button class="send-button" (click)='onClick(messageInput.value)'>Send</button>
-        </form>
+    <div class="chat-input-container">
+        <textarea class="chat-input" placeholder="I want to check my balance..." #messageInput></textarea>
+        <button class="send-button" (click)='[onClick(messageInput.value), messageInput.value=""]'>
+            <i class="arrow up"></i>
+        </button>
     </div>
 </div>

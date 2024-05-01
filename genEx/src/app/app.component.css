@@ -1,3 +1,28 @@
+.chat-bubble {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #007bff;
+  color: #fff;
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.plus-icon {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.centerChat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 :host {
     --bright-blue: oklch(51.01% 0.274 263.83);
     --electric-violet: oklch(53.18% 0.28 296.97);
