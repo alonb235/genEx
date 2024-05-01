@@ -1,4 +1,4 @@
-<div>
+<div style="position: relative;">
     <ul>
         <li>
             <a>home</a>
@@ -20,11 +20,5 @@
                 inputs: comp.inputs;
             "/>
         </div>
-    </div>    
-    <div style="z-index: 9999; position: relative;">
-        <div class="chat-bubble" (click)="openChat()">
-            <span class="plus-icon">+</span>
-        </div>
-        <app-chat-box *ngIf="chatVisible" class="centerChat"></app-chat-box>
     </div>
 </div>
