@@ -1,0 +1,20 @@
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="Balance Funds">
+        <th mat-header-cell *matHeaderCellDef>Balance Funds</th>
+        <td mat-cell *matCellDef="let element">{{element['Balance Funds']}}</td>
+    </ng-container>
+    <ng-container matColumnDef="Quantity">
+        <th mat-header-cell *matHeaderCellDef>Quantity</th>
+        <td mat-cell *matCellDef="let element">{{element.Quantity}}</td>
+    </ng-container>
+    <ng-container matColumnDef="Price">
+        <th mat-header-cell *matHeaderCellDef>Price</th>
+        <td mat-cell *matCellDef="let element">${{element.Price}}</td>
+    </ng-container>
+    <ng-container matColumnDef="Current Balance">
+        <th mat-header-cell *matHeaderCellDef>Current Balance</th>
+        <td mat-cell *matCellDef="let element">{{element['Current Balance']}}%</td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns:displayedColumns"></tr>
+</table>
