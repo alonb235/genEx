@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ChartOptions, ChartType, ChartDataSets, Chart } from 'chart.js';
+import { ChartOptions, ChartType, ChartDataset, Chart } from 'chart.js/auto';
 
 @Component({
     selector: 'account-balance',
@@ -8,7 +8,7 @@ import { ChartOptions, ChartType, ChartDataSets, Chart } from 'chart.js';
     templateUrl: './account-balance.component.html',
     styleUrl: './account-balance.component.css'
 })
-export class RetirementContributionSliderComponent {
+export class AccountBalanceComponent {
     
     ngOnInit() {
         this.calculateFutureBalances();
@@ -24,9 +24,9 @@ export class RetirementContributionSliderComponent {
     };
 
     public lineChartType: ChartType = "line";
-    public lineChartLegend = true;
-    public lineChartData: ChartDataSets[] = [
-        { data: this.futureBalances, Label: Array.from({length: (2050-2024)/2}, (_,i)=>2024 + i*1)}
+    public lineChartLegend = false;
+    public lineChartData: ChartDataset[] = [
+        { data: this.futureBalances, label: "Estimated Account Balance" }
     ]
 
     calculateFutureBalances() {
@@ -39,12 +39,13 @@ export class RetirementContributionSliderComponent {
     }
 
     createChart() {
-        this.chart = new Chart(
-            "MyChart",
-            {
-                type: this.lineChartType,
-                data: this.lineChartData,
-                options: { aspectRatio: 2.5 }
+        this.chart = new Chart("MyChart", {
+            type: this.lineChartType,
+            data: {
+                labels: Array.from({length: (2050-2024)/2}, (_,i)=>2024 + i*1),
+                datasets: this.lineChartData
+            },
+            options: { aspectRatio: 2.5 }
             }
         );
     }

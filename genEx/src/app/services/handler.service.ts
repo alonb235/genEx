@@ -4,6 +4,7 @@ import { users } from './userData';
 import { Subject } from 'rxjs';
 import * as hackathon_keys from "c:/shared/content/config/api-keys/hackathon_openai_keys.json";
 import { RetirementContributionSliderComponent } from '../components/retirement-contribution-slider/retirement-contribution-slider.component';
+import { AccountBalanceComponent } from '../components/account-balance/account-balance.component'
 import { YourIraComponent } from 'components/your-ira/your-ira.component';
 
 
@@ -22,7 +23,8 @@ interface userData {
     companyMatch: number,
     iraAccount: number,
     iraBalance: number,
-    iraContributionsThisYear: number
+    iraContributionsThisYear: number,
+    accountBalance: number
 }
 
 @Injectable({
@@ -60,6 +62,18 @@ export class HandlerService {
                 }
             },
             type: "function"
+        },
+        {
+            function: {
+                name: "display_Balance_components",
+                description: "Displays an interactive web component for a User to view their account balance",
+                parameters: {
+                    type: "object",
+                    properties: {},
+                    required: []
+                }
+            },
+            type: "function"
         }
     ];
 
@@ -72,6 +86,13 @@ export class HandlerService {
 
     getUserDetails(uid: number) {
         return users[uid] as userData;
+    }
+
+    displayBalanceComponent() {
+        const details = this.getUserDetails(this.current_userID)
+        const resStr = `${details.name} has an account balance of ${details.accountBalance}`;
+        this.componentToRender.push({component: AccountBalanceComponent, inputs: { totalContribution: details.totalContribution, companyMatch: details.companyMatch, income: details.income}});
+        return resStr;
     }
 
     display401kComponent() {
@@ -110,6 +131,7 @@ export class HandlerService {
             const availableFunctions: any = {
                 'display_401k_components' : this.display401kComponent.bind(this),
                 'display_IRA_components' : this.displayIraComponents.bind(this),
+                'display_Balance_components' : this.displayBalanceComponent.bind(this)
             }; // only one function in this example, but you can have multiple
             this.messages.push(responseMessage); // extend conversation with assistant's reply
             for (const toolCall of toolCalls) {
