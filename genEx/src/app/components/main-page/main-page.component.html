@@ -1,0 +1,22 @@
+<ul>
+    <li>
+        <a>home</a>
+    </li>
+    <li>
+        <a>account</a>
+    </li>
+    <li>
+        <a>research</a>
+    </li>
+    <li>
+        <a>contact us</a>
+    </li>
+</ul>
+<div class="container">
+    <div class="card" *ngFor="let comp of componentsToDisplay">
+        <ng-container *ngComponentOutlet="
+            comp.component;
+            inputs: comp.inputs;
+        "/>
+    </div>
+</div>
