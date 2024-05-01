@@ -20,6 +20,7 @@
     width: 100%;
     margin-bottom: 50px;
     overflow-y: auto;
+    box-shadow: darkgray;
 }
 
 .chats::-webkit-scrollbar {
