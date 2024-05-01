@@ -1,6 +1,5 @@
 import { Component, ComponentFactoryResolver, inject, Input, Type, ViewChild, ViewContainerRef } from '@angular/core';
 import { NgComponentOutlet, AsyncPipe, CommonModule } from '@angular/common'
-import { Subscription } from 'rxjs';
 import { HandlerService } from 'services/handler.service';
 
 @Component({
@@ -9,8 +8,8 @@ import { HandlerService } from 'services/handler.service';
     imports: [NgComponentOutlet, AsyncPipe, CommonModule],
     template: `
       <div>
-        <div *ngIf="!responseIsString" style="background-color: white; padding: 5px; border-radius: 10px;">
-          <ng-container #container></ng-container>
+        <div *ngIf="!responseIsString" style="padding: 5px; border-radius: 10px;">
+          <ng-container #container style="background-color: white;"></ng-container>
         </div>
         <div #elseBlock>
           <p>{{responseText}}</p>
@@ -22,7 +21,7 @@ import { HandlerService } from 'services/handler.service';
     @ViewChild('container', { read: ViewContainerRef}) container: ViewContainerRef;
     constructor(private readonly handlerService: HandlerService, private componentFactoryResolver: ComponentFactoryResolver) {}
 
-    @Input() msg: string = "A user is asking what their IRA contributions is. As a response please display an interactive web component for the user";
+    @Input() msg: string = "";
 
     ngOnInit(): void {
       this.sendMessage(this.msg)
@@ -30,12 +29,7 @@ import { HandlerService } from 'services/handler.service';
 
     public currentCompon: { component: Type<any>; inputs: Record<any, any>; }
     public responseIsString: boolean = false;
-    private subscription: Subscription;
     public responseText: string;
-
-    ngOnDestroy() {
-      this.subscription.unsubscribe();
-    }
 
     currentComponent() {
       const comp = this.handlerService.getComponentsToRender().pop()
