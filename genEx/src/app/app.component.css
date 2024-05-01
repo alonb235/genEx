@@ -1,7 +1,7 @@
 .chat-bubble {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 25px;
+  right: 25px;
   background-color: #007bff;
   color: #fff;
   width: 50px;
@@ -10,10 +10,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  transform: translate(0, -50%);
+  box-shadow: darkgray;
 }
 
 .plus-icon {
-  font-size: 24px;
+  font-size: 30px;
+  margin: auto;
   cursor: pointer;
 }
 
@@ -22,6 +26,7 @@
   align-items: center;
   justify-content: center;
   margin:0 auto;
+  box-shadow: darkgray;
 }
 
 :host {
