@@ -9,7 +9,7 @@ import { HandlerService } from 'services/handler.service';
     imports: [NgComponentOutlet, AsyncPipe, CommonModule],
     template: `
       <div>
-        <div *ngIf="!responseIsString">
+        <div *ngIf="!responseIsString" style="background-color: white; padding: 5px; border-radius: 10px;">
           <ng-container #container></ng-container>
         </div>
         <div #elseBlock>
