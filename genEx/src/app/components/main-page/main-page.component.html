@@ -1,22 +1,30 @@
-<ul>
-    <li>
-        <a>home</a>
-    </li>
-    <li>
-        <a>account</a>
-    </li>
-    <li>
-        <a>research</a>
-    </li>
-    <li>
-        <a>contact us</a>
-    </li>
-</ul>
-<div class="container">
-    <div class="card" *ngFor="let comp of componentsToDisplay">
-        <ng-container *ngComponentOutlet="
-            comp.component;
-            inputs: comp.inputs;
-        "/>
+<div>
+    <ul>
+        <li>
+            <a>home</a>
+        </li>
+        <li>
+            <a>account</a>
+        </li>
+        <li>
+            <a>research</a>
+        </li>
+        <li>
+            <a>contact us</a>
+        </li>
+    </ul>
+    <div class="container">
+        <div class="card" *ngFor="let comp of componentsToDisplay">
+            <ng-container *ngComponentOutlet="
+                comp.component;
+                inputs: comp.inputs;
+            "/>
+        </div>
+    </div>    
+    <div style="z-index: 9999; position: relative;">
+        <div class="chat-bubble" (click)="openChat()">
+            <span class="plus-icon">+</span>
+        </div>
+        <app-chat-box *ngIf="chatVisible" class="centerChat"></app-chat-box>
     </div>
 </div>
