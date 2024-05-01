@@ -1,5 +1,5 @@
 <div>
-    <h3>{{ name }} - Roth IRA {{ iraAccount}}</h3>
+    <h3 style="font-weight: bolder;">{{ name }} - Roth IRA {{ iraAccount}}</h3>
     <h5>Current Balance: ${{ iraBalance }}</h5>
     <mat-form-field appearance="fill" class="mat-form-field-w-margin">
         <mat-label>Funding Source</mat-label>
@@ -10,24 +10,19 @@
     </mat-form-field>
     <div>
         <p>Contributions: ${{ iraContributionsThisYear }}</p>
-        <p>Year</p>
-        <p>2024</p>
-
+        <p>Year: 2024</p>
     </div>
 
     <mat-form-field appearance="fill">
-
         <mat-label>Enter Dollar Amount</mat-label>
         <input matInput type="text" >
-
     </mat-form-field>
     <div class= 'ira-btn-container'>
-        <button class="ira-buttons" mat-stroked-button>
+        <button class="ira-buttons cancel" mat-flat-button color="primary">
             Cancel
         </button>
-        <button class="ira-buttons" mat-flat-button color="primary">
+        <button class="ira-buttons preview" mat-flat-button color="primary">
             Preview
         </button>
     </div>
-
 </div>

@@ -1,17 +1,12 @@
 <div class="container">
     <div class="chats">
         <ng-container *ngFor="let msg of messages.reverse()">
-            <ng-container *ngIf="msg.component">
+            <div *ngIf="msg.user" class="bubble right">
+                {{msg.msg}}
+            </div>
+            <div *ngIf="!msg.user" class="bubble left">
                 <chat-bubble [msg]="msg.msg" class="bubble left"></chat-bubble>
-            </ng-container>
-            <ng-container *ngIf="!msg.component">
-                <div *ngIf="msg.user" class="bubble right">
-                    {{msg.msg}}
-                </div>
-                <div *ngIf="!msg.user" class="bubble left">
-                    {{msg.msg}}
-                </div>
-            </ng-container>
+            </div>
         </ng-container>
     </div>
     <div class="formContainer">

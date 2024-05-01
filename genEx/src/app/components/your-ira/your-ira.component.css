@@ -8,3 +8,11 @@
     padding:24px;
     border-radius: 20px;
 }
+
+.cancel {
+    background-color: crimson;
+}
+
+.preview {
+    background-color: green;
+}
