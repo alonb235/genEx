@@ -1,18 +1,20 @@
 import { Component, ComponentFactoryResolver, inject, Input, Type, ViewChild, ViewContainerRef } from '@angular/core';
-import { NgComponentOutlet, AsyncPipe } from '@angular/common'
-import { MatSliderModule } from '@angular/material/slider'
-import { FormsModule } from '@angular/forms'
+import { NgComponentOutlet, AsyncPipe, CommonModule } from '@angular/common'
 import { Subscription } from 'rxjs';
 import { HandlerService } from 'services/handler.service';
-import { RetirementContributionSliderComponent } from '../retirement-contribution-slider/retirement-contribution-slider.component'
 
 @Component({
     selector: 'chat-bubble',
     standalone: true,
-    imports: [NgComponentOutlet, AsyncPipe],
+    imports: [NgComponentOutlet, AsyncPipe, CommonModule],
     template: `
       <div>
-        <ng-container #container></ng-container>
+        <div *ngIf="!responseIsString">
+          <ng-container #container></ng-container>
+        </div>
+        <div #elseBlock>
+          <p>{{responseText}}</p>
+        </div>
       </div>
     `
   })
@@ -27,7 +29,9 @@ import { RetirementContributionSliderComponent } from '../retirement-contributio
     }
 
     public currentCompon: { component: Type<any>; inputs: Record<any, any>; }
+    public responseIsString: boolean = false;
     private subscription: Subscription;
+    public responseText: string;
 
     ngOnDestroy() {
       this.subscription.unsubscribe();
@@ -39,8 +43,14 @@ import { RetirementContributionSliderComponent } from '../retirement-contributio
     }
 
     async sendMessage(msg) {
-      await this.handlerService.postUserRequest(msg, 0);
-      this.currentComponent()
+      let value = await this.handlerService.postUserRequest(msg, 0);
+      if (typeof value != "string") {   
+        this.responseIsString = false;
+        this.currentComponent();
+      } else {
+        this.responseText = value;
+        this.responseIsString = true;
+      }
     }
 
     loadComponent(component: Type<any>, inputs: Record<any,any>) {

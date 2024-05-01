@@ -64,8 +64,9 @@ export class HandlerService {
     ];
 
     async postUserRequest(message:string, userId:number) {
-        this.messages.push({ role: "user", content: message});
         this.current_userID = userId;
+        let tempMessage = `A user is asking ${message}. Respond normally unless there is an interactive component to display.`
+        this.messages.push({ role: "user", content: tempMessage});
         return await this.formatOpenAIPromt(this.messages);
     }
 
@@ -128,7 +129,7 @@ export class HandlerService {
             }); // get a new response from the model where it can see the function response
             return secondResponse.choices;
         } else {
-            return "NOT WORKING";
+            return responseMessage.content;
         }
     }
 }

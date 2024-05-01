@@ -42,6 +42,7 @@
 }
 
 .form {
+    padding: 10px;
     width: 100%;
     position: absolute;
     height: 20%;
@@ -50,16 +51,15 @@
     display: flex;
     border-radius: 10px;
     background-color: rgb(230, 227, 227);
+    word-wrap: over;
 }
 
 .message-input {
-    width: 77%;
-    padding-left: 5%;
+    width: 85%;
 }
 
 .send-button {
-    width: 5%;
-    margin: 10px;
+    width: 15%;
 }
 
 .formContainer {
