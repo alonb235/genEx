@@ -32,7 +32,6 @@ export class HandlerService {
     constructor() {
     }
 
-    componentToRenderUpdated = new Subject<void>();
     current_userID = 0;
     messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = []
     componentToRender: {component: Type<any>, inputs: Record<any, any>}[]= [];
@@ -64,10 +63,10 @@ export class HandlerService {
         }
     ];
 
-    postUserRequest(message:string, userId:number) {
+    async postUserRequest(message:string, userId:number) {
         this.messages.push({ role: "user", content: message});
         this.current_userID = userId;
-        this.formatOpenAIPromt(this.messages);
+        return await this.formatOpenAIPromt(this.messages);
     }
 
     getUserDetails(uid: number) {
@@ -78,7 +77,6 @@ export class HandlerService {
         const details = this.getUserDetails(this.current_userID)
         const resStr = `${details.name} contributes ${details.totalContribution}% of their salary to their 401k, their employer will match up to ${details.companyMatch}%`;
         this.componentToRender.push({component: RetirementContributionSliderComponent, inputs: { totalContribution: details.totalContribution, companyMatch: details.companyMatch, income: details.income}});
-        this.componentToRenderUpdated.next();
         return resStr;
     }
 
@@ -86,7 +84,6 @@ export class HandlerService {
         const details = this.getUserDetails(this.current_userID);
         const resStr = `${details.name} has an IRA Balance of ${details.iraBalance} in the account ${details.iraAccount}. So far this year ${details.name} has contributed ${details.iraContributionsThisYear} dollars to their IRA.`
         this.componentToRender.push({component: YourIraComponent, inputs: {name: details.name, iraAccount: details.iraAccount, iraBalance: details.iraBalance, iraContributionsThisYear: details.iraContributionsThisYear}});
-        this.componentToRenderUpdated.next();
         return resStr;
     }
 

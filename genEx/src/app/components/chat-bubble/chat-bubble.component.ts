@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, inject, Type, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, inject, Input, Type, ViewChild, ViewContainerRef } from '@angular/core';
 import { NgComponentOutlet, AsyncPipe } from '@angular/common'
 import { MatSliderModule } from '@angular/material/slider'
 import { FormsModule } from '@angular/forms'
@@ -13,14 +13,17 @@ import { RetirementContributionSliderComponent } from '../retirement-contributio
     template: `
       <div>
         <ng-container #container></ng-container>
-        <button (click)="sendMessage()">Next</button>
       </div>
     `
   })
   export class ChatBubbleComponent {
     @ViewChild('container', { read: ViewContainerRef}) container: ViewContainerRef;
-    constructor(private readonly handlerService: HandlerService, private componentFactoryResolver: ComponentFactoryResolver) {
+    constructor(private readonly handlerService: HandlerService, private componentFactoryResolver: ComponentFactoryResolver) {}
 
+    @Input() msg: string = "A user is asking what their IRA contributions is. As a response please display an interactive web component for the user";
+
+    ngOnInit(): void {
+      this.sendMessage(this.msg)
     }
 
     public currentCompon: { component: Type<any>; inputs: Record<any, any>; }
@@ -35,11 +38,9 @@ import { RetirementContributionSliderComponent } from '../retirement-contributio
       this.loadComponent(comp.component, comp.inputs)
     }
 
-    async sendMessage() {
-      await this.handlerService.postUserRequest("A user is asking what their IRA contributions is. As a response please display an interactive web component for the user", 0);
-      this.subscription = this.handlerService.componentToRenderUpdated.subscribe(() => {
-        this.currentComponent()
-      })
+    async sendMessage(msg) {
+      await this.handlerService.postUserRequest(msg, 0);
+      this.currentComponent()
     }
 
     loadComponent(component: Type<any>, inputs: Record<any,any>) {
