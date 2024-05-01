@@ -8,6 +8,12 @@ export const users = [
         "iraAccount": 123456789,
         "iraBalance": 15000,
         "iraContributionsThisYear": 1000,
-        "accountBalance": 1050183
+        "accountBalance": 1050183,
+        "data": [{
+            'Balance Funds': 'VOO', 'Quantity': 2000, 'Price': 30, 'Current Balance': 50
+        }, {
+            'Balance Funds': 'VTI', 'Quantity': 20000, 'Price': 300, 'Current Balance': 50
+        }]
+
     }
 ]

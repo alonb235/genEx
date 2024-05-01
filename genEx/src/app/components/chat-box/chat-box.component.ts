@@ -6,11 +6,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { ChatBubbleComponent } from 'components/chat-bubble/chat-bubble.component';
 import { NgComponentOutlet, AsyncPipe, DOCUMENT } from '@angular/common'
+import { FundsComponent } from 'components/funds/funds.component';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-chat-box',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, CommonModule, NgComponentOutlet, AsyncPipe, ChatBubbleComponent],
+  imports: [MatFormFieldModule,MatTableModule, MatInputModule, FormsModule, MatButtonModule, CommonModule, NgComponentOutlet, AsyncPipe, ChatBubbleComponent, FundsComponent],
   templateUrl: './chat-box.component.html',
   styleUrl: './chat-box.component.css'
 })
